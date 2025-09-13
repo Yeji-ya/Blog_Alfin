@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blog Pribadi</title>
+<style>
+/* Reset & Base Styles */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+:root {
+--primary-color: #FF0076;
+--secondary-color: #00A6FF;
+--text-color: #FFFFFF;
+--bg-color: #111111;
+--card-bg: #222222;
+--border-color: #e9ecef;
+--shadow: 0.5px 10px rgba(0, 0, 0, 0.1);
+--transition: all 0.3s ease;
+}
+
+[data-theme="dark"] {
+--text-color: #9A007E;
+--bg-color: #F8F4E3;
+--card-bg: #F8F4E3;
+--border-color: #404040;
+--shadow: 0.5px 10px rgba(0, 0, 0, 0.3);
+}
+
+body {
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+Oxygen, Ubuntu, Cantarell, sans-serif;
+background-color: var(--bg-color);
+color: var(--text-color);
+line-height: 1.6;
+transition: var(--transition);
+overflow-x: hidden;
+}
+
+/* Loading Screen */
+.loading-screen {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: linear-gradient(
+135deg,
+var(--primary-color),
+var(--secondary-color)
+);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 9999;
+transition: opacity 0.5s ease;
+}
+
+.loading-screen.hidden {
+opacity: 0;
+pointer-events: none;
+}
+
+.loader {
+width: 50px;
+height: 50px;
+border: 3px solid rgba(255, 255, 255, 0.3);
+border-radius: 50%;
+border-top-color: #fff;
+animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+to {
+transform: rotate(360deg);
+}
+}
+
+/* Navigation */
+header {
+background: var(--card-bg);
+box-shadow: var(--shadow);
+position: fixed;
+width: 100%;
+top: 0;
+z-index: 1000;
+transition: var(--transition);
+}
+
+nav {
+max-width: 1200px;
+margin: 0 auto;
+padding: 1rem 2rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.logo {
+font-size: 1.5rem;
+font-weight: bold;
+background: linear-gradient(
+135deg,
+var(--primary-color),
+var(--secondary-color)
+);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+cursor: pointer;
+}
+
+.nav-links {
+display: flex;
+gap: 2rem;
+list-style: none;
+}
+
+.nav-links a {
+text-decoration: none;
+color: var(--text-color);
+font-weight: 500;
+transition: var(--transition);
+position: relative;
+}
+
+.nav-links a::after {
+content: "";
+position: absolute;
+bottom: -5px;
+left: 0;
+width: 0;
+height: 2px;
+background: var(--primary-color);
+transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+width: 100%;
+}
+
+.nav-actions {
+display: flex;
+gap: 1rem;
+align-items: center;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+background: none;
+border: none;
+font-size: 1.5rem;
+cursor: pointer;
+color: var(--text-color);
+transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+transform: rotate(180deg);
+}
+
+/* Hamburger Menu */
+.hamburger {
+display: none;
+flex-direction: column;
+cursor: pointer;
+gap: 4px;
+}
+
+.hamburger span {
+width: 25px;
+height: 3px;
+background: var(--text-color);
+transition: var(--transition);
+}
+
+.hamburger.active span:nth-child(1) {
+transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Main Content */
+main {
+margin-top: 80px;
+min-height: calc(100vh - 80px);
+}
+
+.page {
+display: none;
+animation: fadeIn 0.5s ease;
+}
+
+.page.active {
+display: block;
+}
+
+@keyframes fadeIn {
+from {
+opacity: 0;
+transform: translateY(20px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.container {
+max-width: 1200px;
+margin: 0 auto;
+padding: 2rem;
+}
+
+/* Hero Section */
+.hero {
+background: linear-gradient(
+135deg,
+var(--primary-color),
+var(--secondary-color)
+);
+color: white;
+padding: 4rem 2rem;
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+
+.hero::before {
+content: "";
+position: absolute;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+background: radial-gradient(
+circle,
+rgba(255, 255, 255, 0.1) 0%,
+transparent 70%
+);
+animation: float 20s infinite linear;
+}
+
+@keyframes float {
+to {
+transform: rotate(360deg);
+}
+}
+
+.hero-content {
+position: relative;
+z-index: 1;
+}
+
+.profile-img {
+width: 150px;
+height: 150px;
+border-radius: 50%;
+margin: 0 auto 2rem;
+border: 5px solid rgba(255, 255, 255, 0.3);
+animation: fadeInUp 1s ease;
+}
+
+@keyframes fadeInUp {
+from {
+opacity: 0;
+transform: translateY(30px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+
+.hero h1 {
+font-size: 3rem;
+margin-bottom: 1rem;
+animation: fadeInUp 1s ease 0.2s both;
+}
+
+.tagline {
+font-size: 1.2rem;
+opacity: 0.9;
+animation: fadeInUp 1s ease 0.4s both;
+}
+
+/* Typing Animation */
+.typing {
+display: inline-block;
+overflow: hidden;
+border-right: 3px solid white;
+white-space: nowrap;
+animation: typing 4s steps(50, end), blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+from {
+width: 0;
+}
+to {
+width: 100%;
+}
+}
+
+@keyframes blink {
+from,
+to {
+border-color: transparent;
+}
+50% {
+border-color: white;
+}
+}
+
+/* Cards */
+.card {
+background: var(--card-bg);
+border-radius: 10px;
+overflow: hidden;
+box-shadow: var(--shadow);
+transition: var(--transition);
+margin-bottom: 2rem;
+}
+
+.card:hover {
+transform: translateY(-5px);
+box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card img {
+width: 100%;
+height: 200px;
+object-fit: cover;
+}
+
+.card-body {
+padding: 1.5rem;
+}
+
+.card-title {
+font-size: 1.25rem;
+margin-bottom: 0.5rem;
+color: var(--text-color);
+}
+
+.card-meta {
+display: flex;
+gap: 1rem;
+font-size: 0.875rem;
+color: #666;
+margin-bottom: 1rem;
+}
+
+.card-category {
+background: var(--primary-color);
+color: white;
+padding: 0.25rem 0.75rem;
+border-radius: 20px;
+font-size: 0.75rem;
+}
+
+/* Buttons */
+.btn {
+display: inline-block;
+padding: 0.75rem 1.5rem;
+background: linear-gradient(
+135deg,
+var(--primary-color),
+var(--secondary-color)
+);
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+text-decoration: none;
+transition: var(--transition);
+font-weight: 500;
+}
+
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+background: transparent;
+border: 2px solid var(--primary-color);
+color: var(--primary-color);
+}
+
+.btn-secondary:hover {
+background: var(--primary-color);
+color: white;
+}
+
+/* Forms */
+.form-group {
+margin-bottom: 1.5rem;
+}
+
+.form-group label {
+display: block;
+margin-bottom: 0.5rem;
+font-weight: 500;
+}
+
+.form-control {
+width: 100%;
+padding: 0.75rem;
+border: 2px solid var(--border-color);
+border-radius: 5px;
+background: var(--bg-color);
+color: var(--text-color);
+transition: var(--transition);
+}
+
+.form-control:focus {
+outline: none;
+border-color: var(--primary-color);
+}
+
+.form-error {
+color: #e74c3c;
+font-size: 0.875rem;
+margin-top: 0.25rem;
+}
+
+/* Search Bar */
+.search-container {
+margin-bottom: 2rem;
+position: relative;
+}
+
+.search-input {
+width: 100%;
+padding: 1rem 3rem 1rem 1rem;
+border: 2px solid var(--border-color);
+border-radius: 50px;
+background: var(--card-bg);
+color: var(--text-color);
+transition: var(--transition);
+}
+
+.search-input:focus {
+outline: none;
+border-color: var(--primary-color);
+}
+
+.search-icon {
+position: absolute;
+right: 1rem;
+top: 50%;
+transform: translateY(-50%);
+color: #666;
+}
+
+/* Filter */
+.filter-container {
+display: flex;
+gap: 1rem;
+margin-bottom: 2rem;
+flex-wrap: wrap;
+}
+
+.filter-btn {
+padding: 0.5rem 1rem;
+border: 2px solid var(--border-color);
+background: var(--card-bg);
+color: var(--text-color);
+border-radius: 25px;
+cursor: pointer;
+transition: var(--transition);
+}
+
+.filter-btn.active {
+background: var(--primary-color);
+color: white;
+border-color: var(--primary-color);
+}
+
+/* Progress Bar */
+.progress-bar {
+position: fixed;
+top: 80px;
+left: 0;
+width: 0%;
+height: 3px;
+background: linear-gradient(
+135deg,
+var(--primary-color),
+var(--secondary-color)
+);
+z-index: 999;
+transition: width 0.3s ease;
+}
+
+/* Comments */
+.comments-section {
+margin-top: 3rem;
+padding-top: 2rem;
+border-top: 2px solid var(--border-color);
+}
+
+.comment {
+background: var(--card-bg);
+padding: 1rem;
+border-radius: 10px;
+margin-bottom: 1rem;
+animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+from {
+opacity: 0;
+transform: translateX(-20px);
+}
+to {
+opacity: 1;
+transform: translateX(0);
+}
+}
+
+.comment-author {
+font-weight: bold;
+color: var(--primary-color);
+}
+
+.comment-date {
+font-size: 0.875rem;
+color: #666;
+}
+
+/* Dashboard */
+.dashboard-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 2rem;
+margin-bottom: 2rem;
+}
+
+.dashboard-card {
+background: var(--card-bg);
+padding: 2rem;
+border-radius: 10px;
+text-align: center;
+box-shadow: var(--shadow);
+transition: var(--transition);
+}
+
+.dashboard-card:hover {
+transform: translateY(-5px);
+}
+
+.dashboard-card h3 {
+color: var(--primary-color);
+margin-bottom: 1rem;
+}
+
+/* Scroll to Top Button */
+.scroll-top {
+position: fixed;
+bottom: 2rem;
+right: 2rem;
+width: 50px;
+height: 50px;
+background: linear-gradient(
+135deg,
+var(--primary-color),
+var(--secondary-color)
+);
+color: white;
+border: none;
+border-radius: 50%;
+cursor: pointer;
+display: none;
+align-items: center;
+justify-content: center;
+font-size: 1.5rem;
+transition: var(--transition);
+z-index: 999;
+}
+
+.scroll-top:hover {
+transform: translateY(-5px);
+}
+
+.scroll-top.visible {
+display: flex;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+.nav-links {
+position: fixed;
+top: 80px;
+left: -100%;
+width: 100%;
+height: calc(100vh - 80px);
+background: var(--card-bg);
+flex-direction: column;
+padding: 2rem;
+transition: left 0.3s ease;
+}
+
+.nav-links.active {
+left: 0;
+}
+
+.hamburger {
+display: flex;
+}
+
+.hero h1 {
+font-size: 2rem;
+}
+
+.container {
+padding: 1rem;
+}
+
+.dashboard-grid {
+grid-template-columns: 1fr;
+}
+}
+
+/* Utility Classes */
+.text-center {
+text-align: center;
+}
+
+.mt-2 {
+margin-top: 2rem;
+}
+
+.mb-2 {
+margin-bottom: 2rem;
+}
+
+.hidden {
+display: none !important;
+}
+
+/* Animations */
+.reveal {
+opacity: 0;
+transform: translateY(30px);
+transition: all 0.6s ease;
+}
+
+.reveal.active {
+opacity: 1;
+transform: translateY(0);
+}
+
+/* Article Detail */
+.article-header {
+margin-bottom: 3rem;
+}
+
+.article-title {
+font-size: 2.5rem;
+margin-bottom: 1rem;
+background: linear-gradient(
+135deg,
+var(--primary-color),
+var(--secondary-color)
+);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.article-meta {
+display: flex;
+gap: 2rem;
+color: #666;
+font-size: 0.875rem;
+}
+
+.article-content {
+font-size: 1.1rem;
+line-height: 1.8;
+}
+
+.article-content img {
+max-width: 100%;
+height: auto;
+border-radius: 10px;
+margin: 2rem 0;
+}
+
+/* About Page */
+.about-section {
+background: var(--card-bg);
+padding: 3rem;
+border-radius: 10px;
+margin-bottom: 2rem;
+box-shadow: var(--shadow);
+}
+
+.skills-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+gap: 1rem;
+margin-top: 2rem;
+}
+
+.skill-item {
+background: linear-gradient(
+135deg,
+var(--primary-color),
+var(--secondary-color)
+);
+color: white;
+padding: 1rem;
+text-align: center;
+border-radius: 10px;
+transition: var(--transition);
+}
+
+.skill-item:hover {
+transform: scale(1.05);
+}
+
+.social-links {
+display: flex;
+gap: 1rem;
+justify-content: center;
+margin-top: 2rem;
+}
+
+.social-links a {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 50px;
+height: 50px;
+background: var(--primary-color);
+color: white;
+border-radius: 50%;
+text-decoration: none;
+transition: var(--transition);
+}
+
+.social-links a:hover {
+transform: translateY(-5px);
+background: var(--secondary-color);
+}
+
+/* Modal */
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.5);
+z-index: 9999;
+align-items: center;
+justify-content: center;
+}
+
+.modal.active {
+display: flex;
+}
+
+.modal-content {
+background: var(--card-bg);
+padding: 2rem;
+border-radius: 10px;
+max-width: 500px;
+width: 90%;
+max-height: 90vh;
+overflow-y: auto;
+animation: modalSlide 0.3s ease;
+}
+
+@keyframes modalSlide {
+from {
+transform: translateY(-50px);
+opacity: 0;
+}
+to {
+transform: translateY(0);
+opacity: 1;
+}
+}
+
+.modal-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1.5rem;
+}
+
+.modal-close {
+background: none;
+border: none;
+font-size: 1.5rem;
+cursor: pointer;
+color: var(--text-color);
+}
+
+/* Notification */
+.notification {
+position: fixed;
+top: 100px;
+right: 2rem;
+background: var(--primary-color);
+color: white;
+padding: 1rem 2rem;
+border-radius: 5px;
+box-shadow: var(--shadow);
+transform: translateX(400px);
+transition: transform 0.3s ease;
+z-index: 9999;
+}
+
+.notification.show {
+transform: translateX(0);
+}
+
+.notification.success {
+background: #27ae60;
+}
+
+.notification.error {
+background: #e74c3c;
+}
+
+/* Image Upload Styles */
+.image-upload {
+position: relative;
+display: inline-block;
+cursor: pointer;
+width: 100%;
+}
+
+.image-upload input[type="file"] {
+position: absolute;
+opacity: 0;
+width: 100%;
+height: 100%;
+cursor: pointer;
+}
+
+.image-upload-label {
+display: block;
+padding: 1rem;
+background: var(--card-bg);
+border: 2px dashed var(--border-color);
+border-radius: 10px;
+text-align: center;
+transition: var(--transition);
+}
+
+.image-upload-label:hover {
+border-color: var(--primary-color);
+background: rgba(102, 126, 234, 0.05);
+}
+
+.image-preview {
+margin-top: 1rem;
+position: relative;
+}
+
+.image-preview img {
+width: 100%;
+max-height: 300px;
+object-fit: cover;
+border-radius: 10px;
+}
+
+.image-remove {
+position: absolute;
+top: 10px;
+right: 10px;
+background: rgba(0, 0, 0, 0.7);
+color: white;
+border: none;
+border-radius: 50%;
+width: 30px;
+height: 30px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.image-size-info {
+font-size: 0.875rem;
+color: #666;
+margin-top: 0.5rem;
+}
+</style>
+</head>
+<body>
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+<div class="loader"></div>
+</div>
+
+<!-- Progress Bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Header -->
+<header>
+<nav>
+<div class="logo" onclick="navigateTo('home')">
+My Blog
+</div>
+<ul class="nav-links" id="navLinks">
+<li><a href="#" onclick="navigateTo('home')">🏠 Home</a></li>
+<li><a href="#" onclick="navigateTo('blog')">📰 Blog</a></li>
+<li><a href="#" onclick="navigateTo('about')">👤 About</a></li>
+<li id="navDashboard" class="hidden">
+<a href="#" onclick="navigateTo('dashboard')">🛠 Dashboard</a>
+</li>
+<li id="navLogin">
+<a href="#" onclick="navigateTo('login')">🔐 Login</a>
+</li>
+<li id="navLogout" class="hidden">
+<a href="#" onclick="logout()">🚪 Logout</a>
+</li>
+</ul>
+<div class="nav-actions">
+<button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+<div class="hamburger" id="hamburger" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</div>
+</nav>
+</header>
+
+<!-- Main Content -->
+<main>
+<!-- Home Page -->
+<div id="home" class="page active">
+<section class="hero">
+<div class="hero-content">
+<img
+src="jena.jpg"
+alt="Profile"
+class="profile-img"
+/>
+<h1>Welcome to my blog</h1>
+<p class="tagline">
+<span class="typing"
+>Menulis Sesuatu Tidak Selalu Harus Memiliki Makna Berarti.</span
+>
+</p>
+<div class="mt-2">
+<button class="btn" onclick="navigateTo('blog')">
+Baca Artikel
+</button>
+<button class="btn btn-secondary" onclick="navigateTo('about')">
+Tentang Saya
+</button>
+</div>
+</div>
+</section>
+
+<div class="container">
+<h2 class="text-center reveal">Artikel Terbaru</h2>
+<div class="text-center mb-2">
+<button class="btn btn-secondary" onclick="debugArticles()">
+🔍 Debug Articles
+</button>
+<button class="btn btn-secondary" onclick="resetArticles()">
+🔄 Reset Artikel
+</button>
+</div>
+<div id="recentArticles" class="dashboard-grid mt-2"></div>
+</div>
+</div>
+
+<!-- Blog Page -->
+<div id="blog" class="page">
+<div class="container">
+<h1 class="text-center mb-2">Semua Artikel</h1>
+
+<div class="search-container">
+<input
+type="text"
+class="search-input"
+id="searchInput"
+placeholder="Cari artikel..."
+/>
+<span class="search-icon">🔍</span>
+</div>
+
+<div class="filter-container">
+<button class="filter-btn active" onclick="filterArticles('all')">
+Semua
+</button>
+<button class="filter-btn" onclick="filterArticles('teknologi')">
+Teknologi
+</button>
+<button class="filter-btn" onclick="filterArticles('lifestyle')">
+Lifestyle
+</button>
+<button class="filter-btn" onclick="filterArticles('tutorial')">
+Tutorial
+</button>
+<button class="filter-btn" onclick="filterArticles('cerpen')">
+Cerpen
+</button>
+</div>
+
+<div id="articlesContainer" class="dashboard-grid"></div>
+</div>
+</div>
+
+<!-- Article Detail Page -->
+<div id="article" class="page">
+<div class="container">
+<div id="articleContent"></div>
+</div>
+</div>
+
+<!-- About Page -->
+<div id="about" class="page">
+<div class="container">
+<div class="about-section reveal">
+<h1>Tentang Saya</h1>
+<p class="mt-2">
+Halo! Saya seorang penulis mungkin tidak bisa di sebut sebagai penulis juga.Tapi melalui blog ini, saya ingin berbagi
+pengalaman, pengetahuan, dan inspirasi kepada pembaca.
+</p>
+
+<h2 class="mt-2">Keterampilan</h2>
+<div class="skills-grid">
+<div class="skill-item">
+HTML5
+</div>
+<div class="skill-item">
+CSS3
+</div>
+<div class="skill-item">
+JavaScript
+</div>
+<div class="skill-item">
+UI/UX Design
+</div>
+<div class="skill-item">
+Web Development
+</div>
+<div class="skill-item">
+Content Writing
+</div>
+</div>
+
+<h2 class="mt-2">Hubungi Saya</h2>
+<div class="social-links">
+<a href="https://www.tiktok.com/@reanz4me?_t=ZS-8zc5pi2ovBt&_r=1" title="Tiktok">👾</a>
+<a href="https://wa.me/qr/5T7B44CUDXREA1https://wa.me/qr/5T7B44CUDXREA1" title="WhatsApp">💬</a>
+<a href="#" title="GitHub">💻</a>
+<a href="https://www.instagram.com/alfiennc/" title="instagram" title="Instagram">📷</a>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Login Page -->
+<div id="login" class="page">
+<div class="container">
+<div class="about-section" style="max-width: 500px; margin: 0 auto">
+<h1>Login</h1>
+<form id="loginForm" onsubmit="handleLogin(event)">
+<div class="form-group">
+<label>Email</label>
+<input
+type="email"
+class="form-control"
+id="loginEmail"
+required
+/>
+<div class="form-error" id="loginEmailError"></div>
+</div>
+<div class="form-group">
+<label>Password</label>
+<input
+type="password"
+class="form-control"
+id="loginPassword"
+required
+/>
+<div class="form-error" id="loginPasswordError"></div>
+</div>
+<button type="submit" class="btn" style="width: 100%">
+Login
+</button>
+</form>
+<p class="text-center mt-2">
+Belum punya akun?
+<a href="#" onclick="showRegister()">Register</a>
+</p>
+</div>
+</div>
+</div>
+
+<!-- Dashboard Page -->
+<div id="dashboard" class="page">
+<div class="container">
+<h1 class="text-center mb-2">Dashboard</h1>
+
+<div id="dashboardContent"></div>
+</div>
+</div>
+</main>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+<div class="modal-content">
+<div class="modal-header">
+<h2 id="modalTitle">Tambah Artikel</h2>
+<button class="modal-close" onclick="closeModal()">×</button>
+</div>
+<div id="modalBody"></div>
+</div>
+</div>
+
+<!-- Notification -->
+<div class="notification" id="notification"></div>
+
+<!-- Scroll to Top Button -->
+<button class="scroll-top" id="scrollTop" onclick="scrollToTop()">↑</button>
+
+<script>
+// Global Variables
+let currentPage = "home";
+let currentUser = null;
+let articles = [];
+let comments = {};
+let bookmarks = [];
+let currentImageData = null;
+
+// Initialize
+document.addEventListener("DOMContentLoaded", function () {
+console.log("DOM loaded");
+
+// Hide loading screen
+setTimeout(() => {
+document.getElementById("loadingScreen").classList.add("hidden");
+}, 1000);
+
+// Load theme preference
+const savedTheme = localStorage.getItem("theme") || "light";
+document.documentElement.setAttribute("data-theme", savedTheme);
+updateThemeToggle(savedTheme);
+
+// Load user session
+const savedUser = localStorage.getItem("currentUser");
+if (savedUser) {
+try {
+currentUser = JSON.parse(savedUser);
+updateNavigation();
+} catch (e) {
+console.error("Error parsing user:", e);
+}
+}
+
+// Initialize data
+initializeData();
+
+// Load articles for home page
+setTimeout(() => {
+loadRecentArticles();
+}, 500);
+
+// Setup event listeners
+setupEventListeners();
+
+// Setup scroll animations
+setupScrollAnimations();
+
+// Setup scroll to top
+setupScrollToTop();
+
+console.log("Initialization complete");
+});
+
+// Initialize Data
+function initializeData() {
+console.log("Initializing data...");
+
+// Load articles from localStorage or create default
+const savedArticles = localStorage.getItem("articles");
+if (savedArticles) {
+try {
+articles = JSON.parse(savedArticles);
+console.log("Loaded articles from localStorage:", articles.length);
+} catch (e) {
+console.error("Error parsing articles:", e);
+articles = [];
+}
+} else {
+console.log("Creating default articles...");
+
+localStorage.setItem("articles", JSON.stringify(articles));
+console.log("Created and saved default articles:", articles.length);
+}
+
+// Load comments
+const savedComments = localStorage.getItem("comments");
+if (savedComments) {
+try {
+comments = JSON.parse(savedComments);
+} catch (e) {
+comments = {};
+}
+} else {
+comments = {};
+}
+
+// Load bookmarks
+const savedBookmarks = localStorage.getItem("bookmarks");
+if (savedBookmarks) {
+try {
+bookmarks = JSON.parse(savedBookmarks);
+} catch (e) {
+bookmarks = [];
+}
+} else {
+bookmarks = [];
+}
+
+console.log("Data initialization complete. Articles:", articles.length);
+}
+
+// Navigation
+function navigateTo(page) {
+console.log("Navigating to:", page);
+
+// Hide all pages
+document
+.querySelectorAll(".page")
+.forEach((p) => p.classList.remove("active"));
+
+// Show selected page
+const targetPage = document.getElementById(page);
+if (!targetPage) {
+console.error("Page not found:", page);
+return;
+}
+
+targetPage.classList.add("active");
+
+currentPage = page;
+
+// Close mobile menu
+document.getElementById("navLinks").classList.remove("active");
+document.getElementById("hamburger").classList.remove("active");
+
+// Load page content
+switch (page) {
+case "home":
+console.log("Loading home page articles");
+loadRecentArticles();
+break;
+case "blog":
+loadArticles();
+break;
+case "dashboard":
+loadDashboard();
+break;
+}
+
+// Scroll to top
+window.scrollTo(0, 0);
+}
+
+// Theme Toggle
+function toggleTheme() {
+const currentTheme =
+document.documentElement.getAttribute("data-theme");
+const newTheme = currentTheme === "light" ? "dark": "light";
+
+document.documentElement.setAttribute("data-theme", newTheme);
+localStorage.setItem("theme", newTheme);
+updateThemeToggle(newTheme);
+}
+
+function updateThemeToggle(theme) {
+const themeToggle = document.querySelector(".theme-toggle");
+themeToggle.textContent = theme === "light" ? "🌙": "☀️";
+}
+
+// Mobile Menu
+function toggleMenu() {
+const navLinks = document.getElementById("navLinks");
+const hamburger = document.getElementById("hamburger");
+
+navLinks.classList.toggle("active");
+hamburger.classList.toggle("active");
+}
+
+// Authentication
+function handleLogin(event) {
+event.preventDefault();
+
+const email = document.getElementById("loginEmail").value;
+const password = document.getElementById("loginPassword").value;
+
+// Clear errors
+document.getElementById("loginEmailError").textContent = "";
+document.getElementById("loginPasswordError").textContent = "";
+
+// Validate
+if (!email || !password) {
+showNotification("Mohon isi semua field", "error");
+return;
+}
+
+// Get users from localStorage
+const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+// Find user
+const user = users.find(
+(u) => u.email === email && u.password === password
+);
+
+if (user) {
+currentUser = user;
+localStorage.setItem("currentUser", JSON.stringify(user));
+updateNavigation();
+showNotification("Login berhasil!", "success");
+navigateTo("dashboard");
+} else {
+document.getElementById("loginEmailError").textContent =
+"Email atau password salah";
+}
+}
+
+function showRegister() {
+const modalBody = `
+<form id="registerForm" onsubmit="handleRegister(event)">
+<div class="form-group">
+<label>Nama Lengkap</label>
+<input type="text" class="form-control" id="registerName" required>
+</div>
+<div class="form-group">
+<label>Email</label>
+<input type="email" class="form-control" id="registerEmail" required>
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" class="form-control" id="registerPassword" required>
+</div>
+<div class="form-group">
+<label>Role</label>
+<select class="form-control" id="registerRole">
+<option value="user">Pengunjung</option>
+<option value="admin">Admin</option>
+</select>
+</div>
+<button type="submit" class="btn" style="width: 100%;">Register</button>
+</form>
+`;
+
+showModal("Register", modalBody);
+}
+
+function handleRegister(event) {
+event.preventDefault();
+
+const name = document.getElementById("registerName").value;
+const email = document.getElementById("registerEmail").value;
+const password = document.getElementById("registerPassword").value;
+const role = document.getElementById("registerRole").value;
+
+// Get existing users
+const users = JSON.parse(localStorage.getItem("users") || "[]");
+
+// Check if email already exists
+if (users.find((u) => u.email === email)) {
+showNotification("Email sudah terdaftar", "error");
+return;
+}
+
+// Add new user
+const newUser = {
+id: Date.now(),
+name,
+email,
+password,
+role,
+};
+
+users.push(newUser);
+localStorage.setItem("users", JSON.stringify(users));
+
+showNotification("Registrasi berhasil! Silakan login", "success");
+closeModal();
+}
+
+function logout() {
+currentUser = null;
+localStorage.removeItem("currentUser");
+updateNavigation();
+showNotification("Logout berhasil", "success");
+navigateTo("home");
+}
+
+function updateNavigation() {
+const navLogin = document.getElementById("navLogin");
+const navLogout = document.getElementById("navLogout");
+const navDashboard = document.getElementById("navDashboard");
+
+if (currentUser) {
+navLogin.classList.add("hidden");
+navLogout.classList.remove("hidden");
+navDashboard.classList.remove("hidden");
+} else {
+navLogin.classList.remove("hidden");
+navLogout.classList.add("hidden");
+navDashboard.classList.add("hidden");
+}
+}
+
+// Articles
+function loadRecentArticles() {
+console.log("loadRecentArticles called");
+const container = document.getElementById("recentArticles");
+
+if (!container) {
+console.error("Container #recentArticles not found");
+return;
+}
+
+console.log(
+"Loading recent articles, total:",
+articles ? articles.length: "undefined"
+);
+
+if (!articles || articles.length === 0) {
+container.innerHTML =
+'<p class="text-center">Belum ada artikel tersedia</p>';
+console.log("No articles available");
+return;
+}
+
+const recentArticles = articles.slice(0, 3);
+console.log("Recent articles to display:", recentArticles.length);
+
+container.innerHTML = recentArticles
+.map(
+(article) => `
+<div class="card reveal" onclick="viewArticle(${article.id})">
+<img src="${article.image}" alt="${
+article.title
+}" loading="lazy">
+<div class="card-body">
+<div class="card-meta">
+<span>📅 ${formatDate(article.date)}</span>
+<span class="card-category">${
+article.category
+}</span>
+</div>
+<h3 class="card-title">${article.title}</h3>
+<p>${article.excerpt}</p>
+<button class="btn">Baca Selengkapnya</button>
+</div>
+</div>
+`
+)
+.join("");
+
+console.log("Articles rendered in container");
+
+// Trigger reveal animation
+setTimeout(() => {
+document.querySelectorAll("#recentArticles .reveal").forEach((el) => {
+el.classList.add("active");
+});
+}, 100);
+}
+
+function loadArticles() {
+const container = document.getElementById("articlesContainer");
+const searchValue = document
+.getElementById("searchInput")
+.value.toLowerCase();
+
+let filteredArticles = articles;
+
+// Filter by search
+if (searchValue) {
+filteredArticles = filteredArticles.filter(
+(article) =>
+article.title.toLowerCase().includes(searchValue) ||
+article.excerpt.toLowerCase().includes(searchValue)
+);
+}
+
+// Render articles
+container.innerHTML = filteredArticles
+.map(
+(article) => `
+<div class="card reveal" onclick="viewArticle(${article.id})">
+<img src="${article.image}" alt="${article.title}">
+<div class="card-body">
+<div class="card-meta">
+<span>${formatDate(article.date)}</span>
+<span class="card-category">${
+article.category
+}</span>
+</div>
+<h3 class="card-title">${article.title}</h3>
+<p>${article.excerpt}</p>
+<button class="btn">Baca Selengkapnya</button>
+</div>
+</div>
+`
+)
+.join("");
+
+// Trigger reveal animation
+setTimeout(() => {
+document.querySelectorAll(".reveal").forEach((el) => {
+el.classList.add("active");
+});
+}, 100);
+}
+
+function viewArticle(id) {
+const article = articles.find((a) => a.id === id);
+if (!article) return;
+
+const content = document.getElementById("articleContent");
+content.innerHTML = `
+<div class="article-header">
+<h1 class="article-title">${article.title}</h1>
+<div class="article-meta">
+<span>📅 ${formatDate(article.date)}</span>
+<span>🏷️ ${article.category}</span>
+</div>
+</div>
+<div class="article-content">
+${article.content}
+</div>
+
+${
+currentUser
+? `
+<div class="mt-2">
+<button class="btn" onclick="toggleBookmark(${
+article.id
+})">
+${
+isBookmarked(article.id)
+? "❤️ Hapus dari Bookmark": "🤍 Tambah ke Bookmark"
+}
+</button>
+</div>
+`: ""
+}
+
+<div class="comments-section">
+<h3>Komentar (${
+comments[article.id] ? comments[article.id].length: 0
+})</h3>
+<div id="commentsList"></div>
+
+${
+currentUser
+? `
+<form onsubmit="addComment(event, ${article.id})" class="mt-2">
+<div class="form-group">
+<textarea class="form-control" id="commentText" rows="3" placeholder="Tulis komentar..." required></textarea>
+</div>
+<button type="submit" class="btn">Kirim Komentar</button>
+</form>
+`: '<p class="text-center">Silakan login untuk memberikan komentar</p>'
+}
+</div>
+`;
+
+navigateTo("article");
+loadComments(id);
+
+// Setup progress bar
+setupProgressBar();
+}
+
+function filterArticles(category) {
+// Update active filter button
+document.querySelectorAll(".filter-btn").forEach((btn) => {
+btn.classList.remove("active");
+});
+event.target.classList.add("active");
+
+// Filter articles
+const container = document.getElementById("articlesContainer");
+let filteredArticles = articles;
+
+if (category !== "all") {
+filteredArticles = articles.filter(
+(article) => article.category === category
+);
+}
+
+container.innerHTML = filteredArticles
+.map(
+(article) => `
+<div class="card reveal" onclick="viewArticle(${article.id})">
+<img src="${article.image}" alt="${article.title}">
+<div class="card-body">
+<div class="card-meta">
+<span>${formatDate(article.date)}</span>
+<span class="card-category">${
+article.category
+}</span>
+</div>
+<h3 class="card-title">${article.title}</h3>
+<p>${article.excerpt}</p>
+<button class="btn">Baca Selengkapnya</button>
+</div>
+</div>
+`
+)
+.join("");
+
+// Trigger reveal animation
+setTimeout(() => {
+document.querySelectorAll(".reveal").forEach((el) => {
+el.classList.add("active");
+});
+}, 100);
+}
+
+// Dashboard
+function loadDashboard() {
+const content = document.getElementById("dashboardContent");
+
+if (currentUser.role === "admin") {
+content.innerHTML = `
+<div class="dashboard-grid">
+<div class="dashboard-card">
+<h3>📊 Total Artikel</h3>
+<p style="font-size: 2rem;">${articles.length}</p>
+</div>
+<div class="dashboard-card">
+<h3>👥 Total Pengguna</h3>
+<p style="font-size: 2rem;">${
+JSON.parse(localStorage.getItem("users") || "[]")
+.length
+}</p>
+</div>
+<div class="dashboard-card">
+<h3>💬 Total Komentar</h3>
+<p style="font-size: 2rem;">${
+Object.values(comments).flat().length
+}</p>
+</div>
+</div>
+
+<div class="mt-2">
+<h2>Kelola Artikel</h2>
+<button class="btn" onclick="showAddArticleModal()">➕ Tambah Artikel Baru</button>
+
+<div class="mt-2" id="articlesList"></div>
+</div>
+`;
+
+loadArticlesList();
+} else {
+content.innerHTML = `
+<div class="dashboard-grid">
+<div class="dashboard-card">
+<h3>📚 Artikel Dibaca</h3>
+<p style="font-size: 2rem;">${bookmarks.length}</p>
+</div>
+<div class="dashboard-card">
+<h3>💬 Komentar Diberikan</h3>
+<p style="font-size: 2rem;">${
+Object.values(comments)
+.flat()
+.filter((c) => c.userId === currentUser.id)
+.length
+}</p>
+</div>
+</div>
+
+<div class="mt-2">
+<h2>📌 Artikel Bookmark</h2>
+<div id="bookmarkList"></div>
+</div>
+`;
+
+loadBookmarks();
+}
+}
+
+function loadArticlesList() {
+const container = document.getElementById("articlesList");
+container.innerHTML = articles
+.map(
+(article) => `
+<div class="card">
+<div class="card-body">
+<div class="card-meta">
+<span>${formatDate(article.date)}</span>
+<span class="card-category">${
+article.category
+}</span>
+</div>
+<h3 class="card-title">${article.title}</h3>
+<div style="display: flex; gap: 1rem; margin-top: 1rem;">
+<button class="btn" onclick="editArticle(${
+article.id
+})">✏️ Edit</button>
+<button class="btn btn-secondary" onclick="deleteArticle(${
+article.id
+})">🗑️ Hapus</button>
+</div>
+</div>
+</div>
+`
+)
+.join("");
+}
+
+function showAddArticleModal() {
+const modalBody = `
+<form id="articleForm" onsubmit="saveArticle(event)">
+<div class="form-group">
+<label>Foto Judul</label>
+<div class="image-upload">
+<input type="file" id="articleImage" accept="image/*" onchange="previewImage(event)">
+<label for="articleImage" class="image-upload-label">
+📷 Klik untuk upload gambar
+</label>
+</div>
+<div class="image-size-info">Maksimal: 2MB. Format: JPG, PNG, GIF</div>
+<div id="imagePreview" class="image-preview" style="display: none;">
+<img id="previewImg" src="" alt="Preview">
+<button type="button" class="image-remove" onclick="removeImage()">×</button>
+</div>
+</div>
+<div class="form-group">
+<label>Judul</label>
+<input type="text" class="form-control" id="articleTitle" required>
+</div>
+<div class="form-group">
+<label>Kategori</label>
+<select class="form-control" id="articleCategory" required>
+<option value="teknologi">Teknologi</option>
+<option value="lifestyle">Lifestyle</option>
+<option value="tutorial">Tutorial</option>
+<option value="Cerita Pendek">Cerpen</option>
+</select>
+</div>
+<div class="form-group">
+<label>Ringkasan</label>
+<textarea class="form-control" id="articleExcerpt" rows="3" required></textarea>
+</div>
+<div class="form-group">
+<label>Konten</label>
+<textarea class="form-control" id="articleContent" rows="10" required></textarea>
+</div>
+<button type="submit" class="btn" style="width: 100%;">Simpan Artikel</button>
+</form>
+`;
+
+showModal("Tambah Artikel Baru", modalBody);
+}
+
+function saveArticle(event) {
+event.preventDefault();
+
+const title = document.getElementById("articleTitle").value;
+const category = document.getElementById("articleCategory").value;
+const excerpt = document.getElementById("articleExcerpt").value;
+const content = document.getElementById("articleContent").value;
+
+// Gunakan gambar yang diupload atau gambar default
+const image =
+currentImageData ||
+`https://picsum.photos/seed/${Date.now()}/400/300`;
+
+const newArticle = {
+id: Date.now(),
+title,
+category,
+date: new Date().toISOString().split("T")[0],
+image: image,
+excerpt,
+content,
+};
+
+articles.unshift(newArticle);
+localStorage.setItem("articles", JSON.stringify(articles));
+
+// Reset image data
+currentImageData = null;
+
+showNotification("Artikel berhasil ditambahkan", "success");
+closeModal();
+loadDashboard();
+}
+
+function editArticle(id) {
+const article = articles.find((a) => a.id === id);
+if (!article) return;
+
+const modalBody = `
+<form id="articleForm" onsubmit="updateArticle(event, ${id})">
+<div class="form-group">
+<label>Foto Judul</label>
+<div class="image-upload">
+<input type="file" id="articleImage" accept="image/*" onchange="previewImage(event)">
+<label for="articleImage" class="image-upload-label">
+📷 Klik untuk ganti gambar
+</label>
+</div>
+<div class="image-size-info">Maksimal: 2MB. Format: JPG, PNG, GIF</div>
+<div id="imagePreview" class="image-preview">
+<img id="previewImg" src="${
+article.image
+}" alt="Preview">
+<button type="button" class="image-remove" onclick="removeImage()">×</button>
+</div>
+</div>
+<div class="form-group">
+<label>Judul</label>
+<input type="text" class="form-control" id="articleTitle" value="${
+article.title
+}" required>
+</div>
+<div class="form-group">
+<label>Kategori</label>
+<select class="form-control" id="articleCategory" required>
+<option value="teknologi" ${
+article.category === "teknologi" ? "selected": ""
+}>Teknologi</option>
+<option value="lifestyle" ${
+article.category === "lifestyle" ? "selected": ""
+}>Lifestyle</option>
+<option value="tutorial" ${
+article.category === "tutorial" ? "selected": ""
+}>Tutorial</option>
+</select>
+</div>
+<div class="form-group">
+<label>Ringkasan</label>
+<textarea class="form-control" id="articleExcerpt" rows="3" required>${
+article.excerpt
+}</textarea>
+</div>
+<div class="form-group">
+<label>Konten</label>
+<textarea class="form-control" id="articleContent" rows="10" required>${
+article.content
+}</textarea>
+</div>
+<button type="submit" class="btn" style="width: 100%;">Update Artikel</button>
+</form>
+`;
+
+showModal("Edit Artikel", modalBody);
+
+// Show existing image preview
+document.getElementById("imagePreview").style.display = "block";
+}
+
+function updateArticle(event, id) {
+event.preventDefault();
+
+const title = document.getElementById("articleTitle").value;
+const category = document.getElementById("articleCategory").value;
+const excerpt = document.getElementById("articleExcerpt").value;
+const content = document.getElementById("articleContent").value;
+
+const articleIndex = articles.findIndex((a) => a.id === id);
+if (articleIndex !== -1) {
+// Gunakan gambar yang diupload atau gambar lama
+const image = currentImageData || articles[articleIndex].image;
+
+articles[articleIndex] = {
+...articles[articleIndex],
+title,
+category,
+excerpt,
+content,
+image: image,
+};
+
+localStorage.setItem("articles", JSON.stringify(articles));
+
+// Reset image data
+currentImageData = null;
+
+showNotification("Artikel berhasil diupdate", "success");
+closeModal();
+loadDashboard();
+}
+}
+
+function deleteArticle(id) {
+if (confirm("Apakah Anda yakin ingin menghapus artikel ini?")) {
+articles = articles.filter((a) => a.id !== id);
+localStorage.setItem("articles", JSON.stringify(articles));
+showNotification("Artikel berhasil dihapus", "success");
+loadDashboard();
+}
+}
+
+// Reset Articles
+function resetArticles() {
+if (confirm("Apakah Anda ingin me-reset data artikel ke default?")) {
+localStorage.removeItem("articles");
+initializeData();
+loadRecentArticles();
+showNotification("Data artikel telah di-reset", "success");
+}
+}
+
+// Debug Articles
+function debugArticles() {
+console.log("=== DEBUG ARTICLES ===");
+console.log("Articles array:", articles);
+console.log(
+"Articles length:",
+articles ? articles.length: "undefined"
+);
+console.log(
+"Container exists:",
+!!document.getElementById("recentArticles")
+);
+console.log(
+"Container HTML:",
+document.getElementById("recentArticles").innerHTML
+);
+console.log("====================");
+}
+
+// Fungsi untuk preview gambar
+function previewImage(event) {
+const file = event.target.files[0];
+if (file) {
+// Validasi file size (max 2MB)
+if (file.size > 2 * 1024 * 1024) {
+showNotification(
+"Ukuran gambar terlalu besar! Maksimal 2MB",
+"error"
+);
+event.target.value = "";
+return;
+}
+
+// Validasi file type
+if (!file.type.match("image.*")) {
+showNotification("File harus berupa gambar!", "error");
+event.target.value = "";
+return;
+}
+
+const reader = new FileReader();
+reader.onload = function (e) {
+currentImageData = e.target.result;
+const preview = document.getElementById("imagePreview");
+const previewImg = document.getElementById("previewImg");
+
+previewImg.src = currentImageData;
+preview.style.display = "block";
+};
+reader.readAsDataURL(file);
+}
+}
+
+// Fungsi untuk menghapus gambar
+function removeImage() {
+currentImageData = null;
+const preview = document.getElementById("imagePreview");
+const previewImg = document.getElementById("previewImg");
+const fileInput = document.getElementById("articleImage");
+
+preview.style.display = "none";
+previewImg.src = "";
+fileInput.value = "";
+}
+
+// Bookmarks
+function toggleBookmark(articleId) {
+const index = bookmarks.findIndex(
+(b) => b.articleId === articleId && b.userId === currentUser.id
+);
+
+if (index === -1) {
+bookmarks.push({
+articleId,
+userId: currentUser.id,
+date: new Date().toISOString(),
+});
+showNotification("Ditambahkan ke bookmark", "success");
+} else {
+bookmarks.splice(index, 1);
+showNotification("Dihapus dari bookmark", "success");
+}
+
+localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+viewArticle(articleId);
+}
+
+function isBookmarked(articleId) {
+return bookmarks.some(
+(b) => b.articleId === articleId && b.userId === currentUser.id
+);
+}
+
+function loadBookmarks() {
+const container = document.getElementById("bookmarkList");
+const userBookmarks = bookmarks.filter(
+(b) => b.userId === currentUser.id
+);
+
+if (userBookmarks.length === 0) {
+container.innerHTML =
+'<p class="text-center">Belum ada artikel yang di-bookmark</p>';
+return;
+}
+
+const bookmarkedArticles = articles.filter((article) =>
+userBookmarks.some((b) => b.articleId === article.id)
+);
+
+container.innerHTML = bookmarkedArticles
+.map(
+(article) => `
+<div class="card">
+<div class="card-body">
+<div class="card-meta">
+<span>${formatDate(article.date)}</span>
+<span class="card-category">${
+article.category
+}</span>
+</div>
+<h3 class="card-title">${article.title}</h3>
+<p>${article.excerpt}</p>
+<button class="btn" onclick="viewArticle(${
+article.id
+})">Baca Artikel</button>
+</div>
+</div>
+`
+)
+.join("");
+}
+
+// Comments
+function addComment(event, articleId) {
+event.preventDefault();
+
+const text = document.getElementById("commentText").value;
+
+if (!comments[articleId]) {
+comments[articleId] = [];
+}
+
+comments[articleId].push({
+id: Date.now(),
+userId: currentUser.id,
+userName: currentUser.name,
+text,
+date: new Date().toISOString(),
+});
+
+localStorage.setItem("comments", JSON.stringify(comments));
+
+document.getElementById("commentText").value = "";
+loadComments(articleId);
+showNotification("Komentar berhasil ditambahkan", "success");
+}
+
+function loadComments(articleId) {
+const container = document.getElementById("commentsList");
+const articleComments = comments[articleId] || [];
+
+container.innerHTML = articleComments
+.map(
+(comment) => `
+<div class="comment">
+<div class="comment-author">${comment.userName}</div>
+<div class="comment-date">${formatDate(comment.date)}</div>
+<p style="margin-top: 0.5rem;">${comment.text}</p>
+</div>
+`
+)
+.join("");
+}
+
+// Modal
+function showModal(title, body) {
+document.getElementById("modalTitle").textContent = title;
+document.getElementById("modalBody").innerHTML = body;
+document.getElementById("modal").classList.add("active");
+}
+
+function closeModal() {
+document.getElementById("modal").classList.remove("active");
+// Reset image data saat modal ditutup
+currentImageData = null;
+}
+
+// Notification
+function showNotification(message, type = "success") {
+const notification = document.getElementById("notification");
+notification.textContent = message;
+notification.className = `notification ${type}`;
+notification.classList.add("show");
+
+setTimeout(() => {
+notification.classList.remove("show");
+}, 3000);
+}
+
+// Utility Functions
+function formatDate(dateString) {
+const date = new Date(dateString);
+return date.toLocaleDateString("id-ID", {
+year: "numeric",
+month: "long",
+day: "numeric",
+});
+}
+
+// Event Listeners
+function setupEventListeners() {
+// Search input
+document
+.getElementById("searchInput")
+.addEventListener("input", function () {
+loadArticles();
+});
+
+// Close modal on outside click
+document
+.getElementById("modal")
+.addEventListener("click", function (e) {
+if (e.target === this) {
+closeModal();
+}
+});
+}
+
+// Scroll Animations
+function setupScrollAnimations() {
+const reveals = document.querySelectorAll(".reveal");
+
+function reveal() {
+reveals.forEach((element) => {
+const windowHeight = window.innerHeight;
+const elementTop = element.getBoundingClientRect().top;
+const elementVisible = 150;
+
+if (elementTop < windowHeight - elementVisible) {
+element.classList.add("active");
+}
+});
+}
+
+window.addEventListener("scroll",
+reveal);
+reveal();
+}
+
+// Progress Bar
+function setupProgressBar() {
+const progressBar = document.getElementById("progressBar");
+const articleContent = document.querySelector(".article-content");
+
+if (!articleContent) return;
+
+window.addEventListener("scroll", function () {
+const scrollTop = window.pageYOffset;
+const docHeight = articleContent.offsetHeight;
+const winHeight = window.innerHeight;
+const scrollPercent = scrollTop / (docHeight - winHeight);
+const scrollPercentRounded = Math.round(scrollPercent * 100);
+
+progressBar.style.width = scrollPercentRounded + "%";
+});
+}
+
+// Scroll to Top
+function setupScrollToTop() {
+const scrollTopBtn = document.getElementById("scrollTop");
+
+window.addEventListener("scroll", function () {
+if (window.pageYOffset > 300) {
+scrollTopBtn.classList.add("visible");
+} else {
+scrollTopBtn.classList.remove("visible");
+}
+});
+}
+
+function scrollToTop() {
+window.scrollTo({
+top: 0,
+behavior: "smooth",
+});
+}
+
+// Force load articles if still empty
+setTimeout(() => {
+if (document.getElementById("recentArticles").children.length === 0) {
+console.log("Force loading articles...");
+initializeData();
+loadRecentArticles();
+}
+}, 2000);
+</script>
+</body>
+</html>
